@@ -15,6 +15,8 @@ class HomeCubit extends Cubit<HomeState> {
 
   LegasiHomeUseCases legasiHomeUseCases = LegasiHomeUseCases();
 
+
+
   Future<void> logInButtobClick(
       {required String email, required String password}) async {
     emit(HomeILoadingState());
@@ -24,12 +26,32 @@ class HomeCubit extends Cubit<HomeState> {
     final loginReponse = await legasiHomeUseCases.logIn(email, password);
     loginReponse.fold(
       (error) async {
+        print('fails');
         emit(HomeErrorState(errorMesssage: error.error.toString()));
       },
       (success) {
+        print('Parves');
+        print(success.userType);
         emit(HomeMoveToAdminDashboard(
-            email: success.userEmail, uid: success.uid));
+            email: success.userEmail, uid: success.uid, name: success.userName, userType: success.userType));
       },
     );
+  }
+
+  Future<void> regsiter(
+      {required String email,
+      required String password,
+      required String phone,
+      required String fullName,
+      required String address}) async {
+    emit(HomeILoadingState());
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    final status = await legasiHomeUseCases.register(email, password, phone, fullName, address);
+
+    emit(HomeRegisterVarification(status: status.toString()));
+
+    
   }
 }

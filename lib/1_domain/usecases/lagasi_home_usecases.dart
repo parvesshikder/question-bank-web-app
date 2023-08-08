@@ -11,4 +11,9 @@ class LegasiHomeUseCases {
       email, password) async {
     return legasiHomeRepo.firebaseLoginAndGetUserDetails(email, password);
   }
+
+  Future<String> register(
+      email, password, phone, fullName, address) async {
+    return legasiHomeRepo.firebaseRegisterAndGetUserDetails(email, password, phone, fullName, address);
+  }
 }

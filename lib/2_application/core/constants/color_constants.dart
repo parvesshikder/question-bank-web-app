@@ -6,6 +6,7 @@ const scaffoldBackgroundColor = Color(0xFF464667);
 const accentCanvasColor = Color(0xFF3E3E61);
 const white = Colors.white;
 final actionColor = const Color(0xFF5F5FA7).withOpacity(0.6);
+
 final divider = Divider(color: white.withOpacity(0.3), height: 1);
 const backgroundGradient = LinearGradient(
   colors: [Color(0xffffffff), Color(0xffc5cbeb)],

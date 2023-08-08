@@ -10,9 +10,12 @@ class HomeInitialView extends StatefulWidget {
   final double deviceWidth;
   final bool runInvalidLogIn;
   final String error;
-  const HomeInitialView({
-    required this.deviceWidth, required this.runInvalidLogIn, this.error = '',
-  });
+  final String status;
+  const HomeInitialView(
+      {required this.deviceWidth,
+      required this.runInvalidLogIn,
+      this.error = '',
+      this.status = ''});
 
   @override
   State<HomeInitialView> createState() => _HomeInitialViewState();
@@ -21,11 +24,14 @@ class HomeInitialView extends StatefulWidget {
 class _HomeInitialViewState extends State<HomeInitialView> {
   @override
   void initState() {
-     if(widget.runInvalidLogIn == true){
+    if (widget.runInvalidLogIn == true && widget.error != '') {
       showSnakbarLegasiHome(context);
-     }
+    } else if (widget.runInvalidLogIn == true && widget.status != '') {
+      showSnakbarLegasiHomeVarificationEmail(context);
+    }
     super.initState();
   }
+
   void _showDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -39,6 +45,23 @@ class _HomeInitialViewState extends State<HomeInitialView> {
     return AnimatedSnackBar.material(
       widget.error,
       type: AnimatedSnackBarType.error,
+      mobilePositionSettings: const MobilePositionSettings(
+        topOnAppearance: 100,
+        topOnDissapear: 50,
+        bottomOnAppearance: 100,
+        bottomOnDissapear: 50,
+        left: 20,
+        right: 70,
+      ),
+      mobileSnackBarPosition: MobileSnackBarPosition.top,
+      desktopSnackBarPosition: DesktopSnackBarPosition.topCenter,
+    ).show(context);
+  }
+
+  dynamic showSnakbarLegasiHomeVarificationEmail(BuildContext context) {
+    return AnimatedSnackBar.material(
+      widget.status,
+      type: AnimatedSnackBarType.success,
       mobilePositionSettings: const MobilePositionSettings(
         topOnAppearance: 100,
         topOnDissapear: 50,

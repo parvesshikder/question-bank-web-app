@@ -10,13 +10,26 @@ class LegasiHomeRepoImpls extends LegasiHomeRepo {
 
   @override
   Future<Either<Failure, LegasiHomeLoggedUserEntities>>
-      firebaseLoginAndGetUserDetails(email, passwprd) async {
+      firebaseLoginAndGetUserDetails(email, password) async {
     try {
       final response =
-          await legasiHomeDatasource.getUserDataFromFirebase(email, passwprd);
+          await legasiHomeDatasource.getUserDataFromFirebase(email, password);
       return right(response);
     } on FirebaseAuthException catch (e) {
       return left(ServerFailure(error: e.code.toString()));
+    }
+  }
+
+  @override
+  Future<String> firebaseRegisterAndGetUserDetails(String email,
+      String password, String phone, String fullName, String address) async {
+    try {
+      final response =
+          await legasiHomeDatasource.getUserDataFromFirebaseAfterRegisterNewAC(
+              email, password, phone, fullName, address);
+      return response;
+    } on FirebaseAuthException catch (e) {
+      return e.toString();
     }
   }
 }
