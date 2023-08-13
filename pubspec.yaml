@@ -47,6 +47,8 @@ dependencies:
   collapsible_sidebar: ^2.0.5+1
   shared_preferences: ^2.2.0
   provider: ^6.0.5
+  font_awesome_flutter: ^10.5.0
+  checkbox_grouped: ^2.0.0
   
 
 dev_dependencies:

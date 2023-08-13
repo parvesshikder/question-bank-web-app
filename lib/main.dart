@@ -17,7 +17,7 @@ void main() async {
         appId: "1:408799635477:web:14be005209ce779bb9061c"),
   );
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(LegasiQuestionBank());
+  runApp(const LegasiQuestionBank());
 }
 
 class LegasiQuestionBank extends StatefulWidget {
@@ -29,6 +29,7 @@ class LegasiQuestionBank extends StatefulWidget {
 
 class _LegasiQuestionBankState extends State<LegasiQuestionBank> {
   final Future<FirebaseApp> _initiData = Firebase.initializeApp();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:questionbankleggasi/1_domain/failures/failures.dart';
 
 import 'package:questionbankleggasi/1_domain/usecases/lagasi_home_usecases.dart';
 
@@ -15,10 +15,8 @@ class HomeCubit extends Cubit<HomeState> {
 
   LegasiHomeUseCases legasiHomeUseCases = LegasiHomeUseCases();
 
-
-
   Future<void> logInButtobClick(
-      {required String email, required String password}) async {
+      {required String email, required String password, required String uType}) async {
     emit(HomeILoadingState());
 
     await Future.delayed(const Duration(seconds: 3));
@@ -26,14 +24,20 @@ class HomeCubit extends Cubit<HomeState> {
     final loginReponse = await legasiHomeUseCases.logIn(email, password);
     loginReponse.fold(
       (error) async {
-        print('fails');
-        emit(HomeErrorState(errorMesssage: error.error.toString()));
+        emit(HomeErrorState(errorMessage: error.toString()));
       },
       (success) {
-        print('Parves');
-        print(success.userType);
-        emit(HomeMoveToAdminDashboard(
-            email: success.userEmail, uid: success.uid, name: success.userName, userType: success.userType));
+        if(success.userType == uType){
+          emit(HomeMoveToAdminDashboard(
+            email: success.userEmail,
+            uid: success.uid,
+            name: success.userName,
+            userType: success.userType));
+        }else{
+          FirebaseAuth.instance.signOut();
+          emit(HomeErrorState(errorMessage: 'Invalid User'));
+        }
+        
       },
     );
   }
@@ -48,10 +52,11 @@ class HomeCubit extends Cubit<HomeState> {
 
     await Future.delayed(const Duration(seconds: 3));
 
-    final status = await legasiHomeUseCases.register(email, password, phone, fullName, address);
+    final status = await legasiHomeUseCases.register(
+        email, password, phone, fullName, address);
 
     emit(HomeRegisterVarification(status: status.toString()));
-
-    
   }
 }
+
+

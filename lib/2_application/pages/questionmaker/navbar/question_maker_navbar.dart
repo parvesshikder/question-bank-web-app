@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:questionbankleggasi/2_application/core/constants/constants.dart';
 import 'package:questionbankleggasi/2_application/pages/admin/admin_dashboard.dart';
+import 'package:questionbankleggasi/2_application/pages/questionmaker/question_maker_dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:questionbankleggasi/2_application/core/constants/imagepath_constants.dart';
 import 'dart:html' as html;
 
-class AdminNavbar extends StatefulWidget {
-  const AdminNavbar({Key? key}) : super(key: key);
+class QuestionMakerNavbar extends StatefulWidget {
+  const QuestionMakerNavbar({Key? key}) : super(key: key);
 
   @override
-  _AdminNavbarState createState() => _AdminNavbarState();
+  _QuestionMakerNavbarState createState() => _QuestionMakerNavbarState();
 }
 
-class _AdminNavbarState extends State<AdminNavbar> {
+class _QuestionMakerNavbarState extends State<QuestionMakerNavbar> {
   var fireAuth = FirebaseAuth.instance;
   bool isMenuOpen = true; // Set initial value to false
   int selectedIndex = 0;
@@ -65,16 +66,16 @@ class _AdminNavbarState extends State<AdminNavbar> {
           ),
         ),
         actions: const [
-    Expanded(
-      child: Center(
-        child: Text(
-          'Admin Dashboard',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    ),
-  ],
+          Expanded(
+            child: Center(
+              child: Text(
+                'Question Maker Dashboard',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+        ],
       ),
       drawer: isMenuOpen
           ? Drawer(
@@ -98,7 +99,6 @@ class _AdminNavbarState extends State<AdminNavbar> {
                         await fireAuth.signOut();
                         html.window.location.reload();
                       });
-                      
                     },
                   ),
                 ],
@@ -131,15 +131,14 @@ class _AdminNavbarState extends State<AdminNavbar> {
                           await fireAuth.signOut();
                           html.window.location.reload();
                         });
-                        
                       },
                     ),
                   ],
                 ),
               ),
             ),
-          Expanded(
-            child: AdminDashboard(),
+          const Expanded(
+            child: QuestionMakerDashboard(),
           ),
         ],
       ),

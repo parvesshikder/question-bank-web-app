@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:questionbankleggasi/2_application/core/constants/constants.dart';
 import 'package:questionbankleggasi/2_application/pages/legasi_home/widget/hero_text.dart';
@@ -22,14 +24,30 @@ class HomeInitialView extends StatefulWidget {
 }
 
 class _HomeInitialViewState extends State<HomeInitialView> {
+  final _firebaseAuth = FirebaseAuth.instance;
+  final _firebaseFirestore = FirebaseFirestore.instance;
+
   @override
   void initState() {
+    getQuestionTotal();
     if (widget.runInvalidLogIn == true && widget.error != '') {
       showSnakbarLegasiHome(context);
     } else if (widget.runInvalidLogIn == true && widget.status != '') {
       showSnakbarLegasiHomeVarificationEmail(context);
     }
     super.initState();
+  }
+
+  int questionCount = 0;
+
+  Future<void> getQuestionTotal() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await _firebaseFirestore.collection('questions').get();
+
+
+    setState(() {
+      questionCount = querySnapshot.size;
+    });
   }
 
   void _showDialog(BuildContext context) {
@@ -137,7 +155,7 @@ class _HomeInitialViewState extends State<HomeInitialView> {
                             ),
                           ),
                           child: Text(
-                            'Log In',
+                            'Login',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -165,7 +183,8 @@ class _HomeInitialViewState extends State<HomeInitialView> {
             const SizedBox(
               height: 50,
             ),
-            HeroText(widget.deviceWidth, '+1000000', color2Gradient),
+            HeroText(widget.deviceWidth, '+ ${questionCount.toString()}',
+                color2Gradient),
             const SizedBox(
               height: 8,
             ),
