@@ -16,7 +16,7 @@ class LegasiHomeRepoImpls extends LegasiHomeRepo {
           await legasiHomeDatasource.getUserDataFromFirebase(email, password);
       return right(response);
     } on FirebaseAuthException catch (e) {
-      return left(ServerFailure(error: e.code.toString()));
+      return left(ServerFailure(error: e.toString()));
     }
   }
 

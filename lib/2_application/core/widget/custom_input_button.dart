@@ -6,6 +6,7 @@ class CustomInputButton extends StatelessWidget {
   final bool obscureText;
   final TextInputType textInputType;
   final TextEditingController controller;
+  final int mline;
 
   const CustomInputButton({super.key, 
     
@@ -14,15 +15,19 @@ class CustomInputButton extends StatelessWidget {
     required this.obscureText,
     required this.textInputType,
     required this.controller, String? errorText,
+    this.mline = 1,
   }) ;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      
       controller: controller,
       obscureText: obscureText,
+      maxLines: mline,
       keyboardType: textInputType,
       decoration: InputDecoration(
+        
         focusedBorder: InputBorder.none,
         border: const OutlineInputBorder(
           borderSide: BorderSide.none,

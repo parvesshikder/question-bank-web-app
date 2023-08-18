@@ -1,21 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:questionbankleggasi/2_application/core/constants/constants.dart';
-import 'package:questionbankleggasi/2_application/pages/admin/admin_dashboard.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:questionbankleggasi/2_application/core/constants/imagepath_constants.dart';
 import 'dart:html' as html;
 
-class AdminNavbar extends StatefulWidget {
-  const AdminNavbar({Key? key}) : super(key: key);
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:questionbankleggasi/2_application/pages/questiontaker/question_taker_initial_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:questionbankleggasi/2_application/core/constants/constants.dart';
+
+class QuestionTakerNavbar extends StatefulWidget {
+  const QuestionTakerNavbar({Key? key}) : super(key: key);
 
   @override
-  _AdminNavbarState createState() => _AdminNavbarState();
+  _QuestionTakerNavbarState createState() => _QuestionTakerNavbarState();
 }
 
-class _AdminNavbarState extends State<AdminNavbar> {
+class _QuestionTakerNavbarState extends State<QuestionTakerNavbar> {
   var fireAuth = FirebaseAuth.instance;
-  bool isMenuOpen = true; // Set initial value to false
+   bool isMenuOpen = true; // Set initial value to false
   int selectedIndex = 0;
 
   late SharedPreferences _prefs;
@@ -49,6 +50,8 @@ class _AdminNavbarState extends State<AdminNavbar> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
@@ -65,16 +68,16 @@ class _AdminNavbarState extends State<AdminNavbar> {
           ),
         ),
         actions: const [
-    Expanded(
-      child: Center(
-        child: Text(
-          'Admin Dashboard',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    ),
-  ],
+          Expanded(
+            child: Center(
+              child: Text(
+                'Question Taker Dashboard',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+        ],
       ),
       drawer: isMenuOpen
           ? Drawer(
@@ -98,7 +101,6 @@ class _AdminNavbarState extends State<AdminNavbar> {
                         await fireAuth.signOut();
                         html.window.location.reload();
                       });
-                      
                     },
                   ),
                 ],
@@ -131,15 +133,14 @@ class _AdminNavbarState extends State<AdminNavbar> {
                           await fireAuth.signOut();
                           html.window.location.reload();
                         });
-                        
                       },
                     ),
                   ],
                 ),
               ),
             ),
-          Expanded(
-            child: AdminDashboard(),
+           Expanded(
+            child: Center(child: QuestionTakerInitialScreen()),
           ),
         ],
       ),

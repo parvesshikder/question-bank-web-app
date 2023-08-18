@@ -12,7 +12,7 @@ SizedBox HeroText(
         text,
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: deviceWidth > 800 ? 38 : 26,
+          fontSize: deviceWidth > 700 ? 38 : 18,
           fontWeight: FontWeight.bold,
           color: Colors.white, // Text color for the gradient effect
         ),

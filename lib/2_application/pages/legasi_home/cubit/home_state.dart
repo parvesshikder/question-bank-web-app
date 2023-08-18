@@ -1,15 +1,15 @@
 part of 'home_cubit.dart';
 
 @immutable
-sealed class HomeState {}
+abstract class HomeState {}
 
-final class HomeInitial extends HomeState {
+ class HomeInitial extends HomeState {
   
 }
 
-final class HomeILoadingState extends HomeState {}
+ class HomeILoadingState extends HomeState {}
 
-final class HomeMoveToAdminDashboard extends HomeState {
+ class HomeMoveToAdminDashboard extends HomeState {
   final String uid;
   final String email;
   final String userType;
@@ -18,13 +18,13 @@ final class HomeMoveToAdminDashboard extends HomeState {
   HomeMoveToAdminDashboard({required this.uid, required this.email,required this.userType, required this.name});
 }
 
-final class HomeErrorState extends HomeState {
-  final String errorMesssage;
+ class HomeErrorState extends HomeState {
+  final String errorMessage;
 
-  HomeErrorState({required this.errorMesssage});
+  HomeErrorState({required this.errorMessage});
 }
 
-final class HomeRegisterVarification extends HomeState {
+ class HomeRegisterVarification extends HomeState {
   final String status;
 
   HomeRegisterVarification({required this.status});
