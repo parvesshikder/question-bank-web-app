@@ -109,7 +109,7 @@ class _QuestionMakerNavbarState extends State<QuestionMakerNavbar> {
         children: [
           if (isMenuOpen)
             Container(
-              width: 300,
+              width: 200,
               child: Drawer(
                 child: ListView(
                   children: [

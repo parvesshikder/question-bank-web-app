@@ -7,7 +7,9 @@ import 'package:questionbankleggasi/2_application/core/constants/constants.dart'
 import 'package:questionbankleggasi/2_application/pages/admin/navbar/admin_navbar.dart';
 import 'package:questionbankleggasi/2_application/pages/legasi_home/cubit/home_cubit.dart';
 import 'package:questionbankleggasi/2_application/pages/legasi_home/legasi_home_page.dart';
+import 'package:questionbankleggasi/2_application/pages/questionmaker/cubit/question_maker_cubit.dart';
 import 'package:questionbankleggasi/2_application/pages/questionmaker/navbar/question_maker_navbar.dart';
+import 'package:questionbankleggasi/2_application/pages/questiontaker/cubit/question_taker_cubit.dart';
 import 'package:questionbankleggasi/2_application/pages/questiontaker/navbar/question_taker_navbar.dart';
 
 class Wrapper extends StatefulWidget {
@@ -66,6 +68,8 @@ class _WrapperState extends State<Wrapper> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => HomeCubit(context: context)),
+        BlocProvider(create: (context) => QuestionTakerCubit(context: context)),
+        BlocProvider(create: (context) => QuestionMakerCubit(context: context)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

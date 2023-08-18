@@ -109,7 +109,7 @@ class _AdminNavbarState extends State<AdminNavbar> {
         children: [
           if (isMenuOpen)
             Container(
-              width: 300,
+              width: 200,
               child: Drawer(
                 child: ListView(
                   children: [

@@ -16,7 +16,7 @@ class QuestionTakerNavbar extends StatefulWidget {
 
 class _QuestionTakerNavbarState extends State<QuestionTakerNavbar> {
   var fireAuth = FirebaseAuth.instance;
-  bool isMenuOpen = true; // Set initial value to false
+   bool isMenuOpen = true; // Set initial value to false
   int selectedIndex = 0;
 
   late SharedPreferences _prefs;
@@ -50,6 +50,8 @@ class _QuestionTakerNavbarState extends State<QuestionTakerNavbar> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
@@ -109,7 +111,7 @@ class _QuestionTakerNavbarState extends State<QuestionTakerNavbar> {
         children: [
           if (isMenuOpen)
             Container(
-              width: 300,
+              width: 200,
               child: Drawer(
                 child: ListView(
                   children: [
@@ -138,7 +140,7 @@ class _QuestionTakerNavbarState extends State<QuestionTakerNavbar> {
               ),
             ),
            Expanded(
-            child: QuestionTakerInitialScreen(),
+            child: Center(child: QuestionTakerInitialScreen()),
           ),
         ],
       ),

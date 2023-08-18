@@ -27,10 +27,6 @@ class _DialogContentLoginState extends State<DialogContentLogin> {
 
   Users? _selectedUserType = Users.public;
 
-  
-
-
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -41,25 +37,41 @@ class _DialogContentLoginState extends State<DialogContentLogin> {
       ),
       content: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-        child: Container(
-          width: 450,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 150, child: Image.asset(logo)),
-              const SizedBox(
-                height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              width: 450,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: 150, child: Image.asset(logo)),
+                  const SizedBox(
+                    height: 50,
+                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                         children: [
+                          Row(
+                            children: [
+                              Radio<Users>(
+                                value: Users.public,
+                                groupValue: _selectedUserType,
+                                onChanged: (Users? value) {
+                                  setState(() {
+                                    _selectedUserType = value;
+                                  });
+                                },
+                              ),
+                              const Text(' Teachers '),
+                            ],
+                          ),
                           Radio<Users>(
-                            value: Users.public,
+                            value: Users.questionMaker,
                             groupValue: _selectedUserType,
                             onChanged: (Users? value) {
                               setState(() {
@@ -67,133 +79,119 @@ class _DialogContentLoginState extends State<DialogContentLogin> {
                               });
                             },
                           ),
-                          const Text(' Teachers '),
+                          const Text(' Question Maker '),
+                          Radio<Users>(
+                            value: Users.admin,
+                            groupValue: _selectedUserType,
+                            onChanged: (Users? value) {
+                              setState(() {
+                                _selectedUserType = value;
+                              });
+                            },
+                          ),
+                          const Text(' Admin '),
                         ],
                       ),
-                      Radio<Users>(
-                        value: Users.questionMaker,
-                        groupValue: _selectedUserType,
-                        onChanged: (Users? value) {
-                          setState(() {
-                            _selectedUserType = value;
-                          });
-                        },
-                      ),
-                      const Text(' Question Maker '),
-                      Radio<Users>(
-                        value: Users.admin,
-                        groupValue: _selectedUserType,
-                        onChanged: (Users? value) {
-                          setState(() {
-                            _selectedUserType = value;
-                          });
-                        },
-                      ),
-                      const Text(' Admin '),
                     ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomInputButton(
+                    controller: emailController,
+                    obscureText: false,
+                    title: 'Email',
+                    textInputType: TextInputType.emailAddress,
+                    prefixIconUrl: const Icon(
+                      Icons.email,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CustomInputButton(
+                    controller: passwordController,
+                    obscureText: true,
+                    title: 'Password',
+                    textInputType: TextInputType.visiblePassword,
+                    prefixIconUrl: const Icon(
+                      Icons.password,
+                    ),
+                  ),
+                  _selectedUserType == Users.questionMaker
+                      ? const SizedBox(
+                          height: 10,
+                        )
+                      : const SizedBox(
+                          height: 0,
+                        ),
+                  _selectedUserType == Users.questionMaker
+                      ? CustomInputButton(
+                          controller: uniqueCodeController,
+                          obscureText: false,
+                          title: 'Unique Code',
+                          textInputType: TextInputType.name,
+                          prefixIconUrl: const Icon(
+                            Icons.confirmation_number,
+                          ),
+                        )
+                      : const SizedBox(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomElevatedButton(
+                    bordRadious: 4.0,
+                    height: 50.0,
+                    color: const Color(0xFFE0003E),
+                    onPress: () async {
+                      Navigator.of(context).pop();
+
+                      if (emailController.text.isNotEmpty &&
+                          passwordController.text.isNotEmpty) {
+                        if (_selectedUserType == Users.admin) {
+                          choosenUserType = 'admin';
+                        } else if (_selectedUserType == Users.public) {
+                          choosenUserType = 'public';
+                        } else if (_selectedUserType == Users.questionMaker) {
+                          choosenUserType = 'questionMaker';
+                        }
+
+                        BlocProvider.of<HomeCubit>(context).logInButtobClick(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            uType: choosenUserType);
+                      } else {
+                        AnimatedSnackBar.material(
+                          'Invalid Id or Password',
+                          type: AnimatedSnackBarType.error,
+                          mobilePositionSettings: const MobilePositionSettings(
+                            topOnAppearance: 100,
+                            topOnDissapear: 50,
+                            bottomOnAppearance: 100,
+                            bottomOnDissapear: 50,
+                            left: 20,
+                            right: 70,
+                          ),
+                          mobileSnackBarPosition: MobileSnackBarPosition.top,
+                          desktopSnackBarPosition:
+                              DesktopSnackBarPosition.topCenter,
+                        ).show(context);
+                      }
+                    },
+                    textColor: const Color(0xFFDA982A),
+                    child: const SizedBox(
+                      child: Text(
+                        'Log In',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomInputButton(
-                controller: emailController,
-                obscureText: false,
-                title: 'Email',
-                textInputType: TextInputType.emailAddress,
-                prefixIconUrl: const Icon(
-                  Icons.email,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomInputButton(
-                controller: passwordController,
-                obscureText: true,
-                title: 'Password',
-                textInputType: TextInputType.visiblePassword,
-                prefixIconUrl: const Icon(
-                  Icons.password,
-                ),
-              ),
-              _selectedUserType == Users.questionMaker
-                  ? const SizedBox(
-                      height: 10,
-                    )
-                  : const SizedBox(
-                      height: 0,
-                    ),
-              _selectedUserType == Users.questionMaker
-                  ? CustomInputButton(
-                      controller: uniqueCodeController,
-                      obscureText: false,
-                      title: 'Unique Code',
-                      textInputType: TextInputType.name,
-                      prefixIconUrl: const Icon(
-                        Icons.confirmation_number,
-                      ),
-                    )
-                  : const SizedBox(),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomElevatedButton(
-                bordRadious: 4.0,
-                height: 50.0,
-                color: const Color(0xFFE0003E),
-                onPress: () async {
-                  Navigator.of(context).pop();
-
-
-                  if (emailController.text.isNotEmpty &&
-                      passwordController.text.isNotEmpty) {
-                    if (_selectedUserType == Users.admin) {
-                      choosenUserType = 'admin';
-                    } else if (_selectedUserType == Users.public) {
-                      choosenUserType = 'public';
-                    } else if (_selectedUserType == Users.questionMaker) {
-                      choosenUserType = 'questionMaker';
-                    }
-
-                 
-                      BlocProvider.of<HomeCubit>(context).logInButtobClick(
-                        email: emailController.text,
-                        password: passwordController.text,
-                        uType: choosenUserType
-                      );
-                   
-                  } else {
-                    AnimatedSnackBar.material(
-                      'Invalid Id or Password',
-                      type: AnimatedSnackBarType.error,
-                      mobilePositionSettings: const MobilePositionSettings(
-                        topOnAppearance: 100,
-                        topOnDissapear: 50,
-                        bottomOnAppearance: 100,
-                        bottomOnDissapear: 50,
-                        left: 20,
-                        right: 70,
-                      ),
-                      mobileSnackBarPosition: MobileSnackBarPosition.top,
-                      desktopSnackBarPosition:
-                          DesktopSnackBarPosition.topCenter,
-                    ).show(context);
-                  }
-                },
-                textColor: const Color(0xFFDA982A),
-                child: const SizedBox(
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
+            ),
           ),
         ),
       ),
